@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Static Image Map</title>
+	<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+	<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+	<script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="/js/data.js"></script>
+</head>
+<body>
+<div id="map" class="map"></div>
+	<script>
+	  var extent = [0, 0, 1920, 1080];// 도면이 표현될 사이즈 = 이미지가 들어갈 영역의 사이즈
+	  var collectArr = []
+	  var projection = new ol.proj.Projection({
+		code: 'xkcd-image',
+		units: 'pixels',
+		extent: extent
+	  });
+
+	  var kmlVectors = new ol.source.Vector();
+	  kmlData.forEach(function(item,index){
+		  var feature = new ol.Feature(
+				{
+					geometry: new ol.geom.Point([Number(item.split(" ")[0]), Number(item.split(" ")[1])])
+				}
+			);
+		  kmlVectors.addFeature(feature);
+	  })
+
+	  var heatVector = new ol.layer.Heatmap({
+		  source: kmlVectors,
+		  blur: 30,
+		  radius: 30
+		});
+
+	  var vectorSource = new ol.source.Vector();
+	  var vectorLayer = new ol.layer.Vector({
+		  source: vectorSource
+	  });
+
+	  var map = new ol.Map({
+		layers: [
+		  new ol.layer.Image({
+			source: new ol.source.ImageStatic({
+			  url: '/images/gangnam_station2.png',// 강남지도 이미지 file path
+			  projection: projection,
+			  imageExtent: extent
+			})
+		  }),heatVector, vectorLayer
+		],
+		interactions: ol.interaction.defaults().extend([
+			new ol.interaction.DragRotateAndZoom()
+		  ]),
+		target: 'map',
+		view: new ol.View({
+		  projection: projection,
+		  center: [387.556155990809, 494.77670203019505],
+		  zoom: 4,
+		  rotation:7.842032356149363,
+		  minZoom: 3
+		})
+	  });
+
+	  heatVector.setVisible(false);
+	  heatVector.setOpacity(0.5);
+
+	 /*
+
+	   map.on("click", function(evt) {
+		  var coord = evt.coordinate;
+		  var lon = coord[0];
+		  var lat = coord[1];
+		  collectArr.push(lon+" "+lat);
+
+		  iconFeature = new ol.Feature({
+			geometry: new ol.geom.Point([lon, lat]),
+			lon: lon,
+			lat: lat
+		});
+
+		iconFeature.setStyle(
+			new ol.style.Style({
+				image: new ol.style.Circle({
+					fill: new ol.style.Fill({ color: [255,0,0,0.7] }),
+					stroke: new ol.style.Stroke({ color: [255,0,0,1] }),
+					radius: 6
+				})
+			})
+		);
+		vectorSource.addFeature(iconFeature);
+	  });
+	   */
+	  var person_Idx = 0;
+	  var person1_Idx =0;
+
+	  function autoMovePoint(){
+		  setInterval(function(){
+			  var lon= Number(movingPathArr[person_Idx].split(" ")[0]);
+			  var lat = Number(movingPathArr[person_Idx].split(" ")[1]);
+
+			  lon = Number(30);
+			  lat = Number(30);
+
+			  var lon1= Number(person1[person1_Idx].split(" ")[0]);
+			  var lat1 = Number(person1[person1_Idx].split(" ")[1]);
+
+			iconFeature = new ol.Feature({
+				geometry: new ol.geom.Point([lon, lat]),
+				lon: lon,
+				lat: lat
+			});
+
+			iconFeature2 = new ol.Feature({
+				geometry: new ol.geom.Point([lon1, lat1]),
+				lon: lon1,
+				lat: lat1
+			});
+
+			iconFeature.setStyle(
+				new ol.style.Style({
+					image: new ol.style.Circle({
+						fill: new ol.style.Fill({ color: [255,0,0,0.7] }),
+						stroke: new ol.style.Stroke({ color: [255,0,0,1] }),
+						radius: 6
+					})
+				})
+			);
+
+			iconFeature2.setStyle(
+					new ol.style.Style({
+						image: new ol.style.Circle({
+							fill: new ol.style.Fill({ color: [255,0,0,0.7] }),
+							stroke: new ol.style.Stroke({ color: [255,0,0,1] }),
+							radius: 6
+						})
+					})
+				);
+			vectorSource.clear();
+			vectorSource.addFeature(iconFeature);
+			vectorSource.addFeature(iconFeature2);
+			person_Idx ++;
+			person1_Idx ++;
+			if(person_Idx==199){
+				person_Idx=0;
+			}
+			if(person1_Idx==96){
+				person1_Idx = 0;
+			}
+		  }, 1000);
+	  }
+
+	  function toggleHeatMap(){
+		  if(!heatVector.getVisible()){
+			  heatVector.setVisible(true)
+		  }else{
+			  heatVector.setVisible(false)
+		  }
+	  }
+
+	  function getHeatMapData(){// heatmap 데이터 get
+		  axios.get('urlinfo')
+		  .then(function(response){
+			  console.log(response); // 객체 형태로 반환. 파싱작업 불필요
+		  });
+	  }
+
+	  function getMapPosData(){// 이동경로 데이터 get
+		  axios.get('urlinfo')
+		  .then(function(response){
+			  alert(response);
+			  console.log(response); // 객체 형태로 반환. 파싱작업 불필요
+		  });
+	  }
+
+	</script>
+</body>
+</html>
