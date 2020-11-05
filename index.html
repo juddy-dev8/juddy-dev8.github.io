@@ -50,7 +50,8 @@ messaging.requestPermission()
 .then(function(token){
 	console.log('token : ' + token);
 	//$('#_token').html(token);
-
+	document.getElementById('_token').innerHTML = token;
+	//$('#_token').html(token);
 })
 .catch(function(arr){
 	console.log("Error Occured");
