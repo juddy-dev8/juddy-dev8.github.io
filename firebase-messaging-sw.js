@@ -1,19 +1,38 @@
-importScripts('https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.0.0/firebase-messaging.js');
+//importScripts('https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js');
+//importScripts('https://www.gstatic.com/firebasejs/8.0.0/firebase-messaging.js');
 
 // Initialize Firebase
-var config = {
-    apiKey: "AIzaSyDW-i-BqUA96_WE5BSTt_Pabr-Ri9vtORo",
-    authDomain: "juddy-test.firebaseapp.com",
-    databaseURL: "https://juddy-test.firebaseio.com",
-    projectId: "juddy-test",
-    storageBucket: "juddy-test.appspot.com",
-    messagingSenderId: "120601746542",
-    appId: "1:120601746542:web:222b9d88bdd5edaaab9a7f",
-    measurementId: "G-P69P17CW2L"
+var firebaseConfig = {
+    apiKey: "AIzaSyBVXG4UfDmB_YPDu8qAnjgyYJuhvgM2VPg",
+    authDomain: "inplemap-4b394.firebaseapp.com",
+    projectId: "inplemap-4b394",
+    storageBucket: "inplemap-4b394.appspot.com",
+    messagingSenderId: "246253828554",
+    appId: "1:246253828554:web:f79a8d91a9ef042df93733",
+    measurementId: "G-SLGEE28FCJ"
 };
 
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging(); //token 값 알아내기
+
+// Add the public key generated from the console here.
+//messaging.usePublicVapidKey("");
+
+messaging.requestPermission()
+.then(function(permission){
+	console.log(permission + " : Have permission");
+	return messaging.getToken();
+})
+.then(function(token){
+	console.log('token : ' + token);
+	//$('#_token').html(token);
+	document.getElementById('_token').innerHTML = token;
+	//$('#_token').html(token);
+})
+.catch(function(arr){
+	console.log("Error Occured");
+	console.log(arr);
+});
 
 const messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function(payload){
