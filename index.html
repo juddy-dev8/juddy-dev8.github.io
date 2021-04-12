@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Static Image Map</title>
-	<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
-	<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-	<script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+	<title>juddy test</title>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
@@ -20,7 +17,9 @@
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
-<!--<script src="/__/firebase/init.js"></script>-->
+	
+	
+<script src="/firebase-messaging-sw.js"></script>
 
 
 
@@ -72,18 +71,7 @@ messaging.requestPermission()
 	console.log(arr);
 });
 
-messaging.setBackgroundMessageHandler(function(payload){
 
-    const title = "Hello World";
-    const options = {
-            body: payload.data.status
-    };
-
-    console.log(payload)
-    return self.registration.showNotification(title,options);
-});
-	
-	
 </script>
 <span id='_token'></span>
 
