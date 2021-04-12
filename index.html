@@ -53,6 +53,7 @@ messaging.requestPermission()
 	console.log(arr);
 });
 
+	/**
 messaging.onMessage(function(payload){
 
     const title = "Hello World";
@@ -62,78 +63,9 @@ messaging.onMessage(function(payload){
 
     console.log(payload)
     return self.registration.showNotification(title,options);
-});
+});**/
 
-	
-function getMessagingObject() {
-  // [START messaging_get_messaging_object]
-  const messaging = firebase.messaging();
-  // [END messaging_get_messaging_object]
-}
 
-function receiveMessage() {
-  const messaging = firebase.messaging();
-  // [START messaging_receive_message]
-  // Handle incoming messages. Called when:
-  // - a message is received while the app has focus
-  // - the user clicks on an app notification created by a service worker
-  //   `messaging.onBackgroundMessage` handler.
-  messaging.onMessage((payload) => {
-    console.log('Message received. ', payload);
-    // ...
-  });
-  // [END messaging_receive_message]
-}
-
-function getToken() {
-	const messaging = firebase.messaging();
-	
-	messaging.requestPermission()
-	.then(function(permission){
-		console.log(permission + " : Have permission");
-		return messaging.getToken();
-	})
-	.then(function(token){
-		console.log('token : ' + token);
-		//$('#_token').html(token);
-		document.getElementById('_token').innerHTML = token;
-		receiveMessage();
-		//$('#_token').html(token);
-	})
-	.catch(function(arr){
-		console.log("Error Occured");
-		console.log(arr);
-	});
-}
-
-function requestPermission() {
-  // [START messaging_request_permission]
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
-      // TODO(developer): Retrieve a registration token for use with FCM.
-      // ...
-    } else {
-      console.log('Unable to get permission to notify.');
-    }
-  });
-  // [END messaging_request_permission]
-}
-
-function deleteToken() {
-  const messaging = firebase.messaging();
-
-  // [START messaging_delete_token]
-  messaging.deleteToken().then(() => {
-    console.log('Token deleted.');
-    // ...
-  }).catch((err) => {
-    console.log('Unable to delete token. ', err);
-  });
-  // [END messaging_delete_token]
-}
-
-//getToken();
 	
 </script>
 	
