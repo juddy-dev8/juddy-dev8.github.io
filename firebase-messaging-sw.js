@@ -34,7 +34,6 @@ messaging.requestPermission()
 	console.log(arr);
 });
 
-const messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function(payload){
 
     const title = "Hello World";
