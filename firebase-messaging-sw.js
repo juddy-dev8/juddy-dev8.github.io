@@ -1,5 +1,6 @@
 // Initialize Firebase
 function initInSw() {
+  console.log('1111')
   // [START messaging_init_in_sw]
   // Give the service worker access to Firebase Messaging.
   // Note that you can only use Firebase Messaging here. Other Firebase libraries
@@ -29,6 +30,7 @@ function initInSw() {
 }
 
 function onBackgroundMessage() {
+  console.log('2222')
   const messaging = firebase.messaging();
 
   // [START messaging_on_background_message]
