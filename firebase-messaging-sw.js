@@ -23,5 +23,6 @@ messaging.setBackgroundMessageHandler(function(payload){
             body: payload.data.status
     };
 
+    console.log(payload);
     return self.registration.showNotification(title,options);
 });
