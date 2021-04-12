@@ -53,7 +53,7 @@ messaging.requestPermission()
 	console.log(arr);
 });
 
-	/**
+
 messaging.onMessage(function(payload){
 
     const title = "Hello World";
@@ -62,9 +62,11 @@ messaging.onMessage(function(payload){
     };
 
     console.log(payload)
-    return self.registration.showNotification(title,options);
-});**/
+    self.registration.showNotification(title, options);
+   // return self.registration.showNotification(title,options);
+});
 
+	   
 
 	
 </script>
